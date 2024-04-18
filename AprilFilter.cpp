@@ -22,11 +22,11 @@ Matrix get_G(double dt) {
 	return Matrix(6, 3, result);
 }
 
-Matrix get_H(int has_gps, int has_barometer) {
+Matrix get_H() {
 	double* result = new double[18] {
-		1.0 * has_gps, 0, 0, 0, 0, 0,
-		0, 1.0 * has_gps, 0, 0, 0, 0,
-		0, 0, 1.0 * has_barometer, 0, 0, 0};
+		1.0, 0, 0, 0, 0, 0,
+		0, 1.0, 0, 0, 0, 0,
+		0, 0, 1.0, 0, 0, 0};
 	return Matrix(3, 6, result);
 }
 
@@ -62,10 +62,10 @@ LinearKalmanFilter* initializeFilter() {
 	return new LinearKalmanFilter(*X, *U, *P, get_F(0.0), get_G(0.0), *R, Q);
 }
 
-double* iterateFilter(LinearKalmanFilter kf, double dt, double* input, double* measurement, int has_gps, int has_barometer) {
+double* iterateFilter(LinearKalmanFilter kf, double dt, double* input, double* measurement) {
 	Matrix meas = Matrix(3, 1, measurement);
 	Matrix inp = Matrix(3, 1, input);
-	Matrix state = kf.iterate(meas, inp, get_F(dt), get_G(dt), get_H(has_gps, has_barometer));
+	Matrix state = kf.iterate(meas, inp, get_F(dt), get_G(dt), get_H());
 	double* ret = new double[6];
 	double* st = state.getArr();
 	for (int i = 0; i < 6; ++i) {

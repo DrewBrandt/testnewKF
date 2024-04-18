@@ -18,8 +18,6 @@ int main() {
     }
 
     std::string line;
-    int has_gps = 1;  // Assuming GPS is always available
-    int has_barometer = 1;  // Assuming barometer is always available
     std::vector<double> data(16); // Adjust the size based on the maximum index you need, e.g., 15
 
     // Create an instance of the filter
@@ -44,7 +42,7 @@ int main() {
         data[5] -= 9.8; // Subtract gravity from the z-acceleration
         double *measurement = new double[3]{ data[14], data[15], data[10] }; // Columns 15, 16, 11
         std::cout << data[0] - lastTime << std::endl;
-        double* result = iterateFilter(*kf, data[0] - lastTime, input, measurement, has_gps, has_barometer);
+        double* result = iterateFilter(*kf, data[0] - lastTime, input, measurement);
 
         lastTime = data[0];
         // Output the state to the output file

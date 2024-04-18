@@ -24,6 +24,7 @@ class LinearKalmanFilter{
         void covariance_extrapolate();
         void calculate_initial_values();
         Matrix iterate(Matrix measurement, Matrix control, Matrix F, Matrix G, Matrix H);
+        void displayAll(Matrix);
     
     private:
         KFState state;

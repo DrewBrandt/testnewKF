@@ -42,10 +42,45 @@ Matrix LinearKalmanFilter::iterate(Matrix measurement, Matrix control, Matrix F,
     state.G = G;
     state.H = H;
     state.U = control;
-    calculate_kalman_gain();
-    estimate_state(measurement);
-    covariance_update();
+    std::cout << "\nInitial State: \n" << std::endl;
+    displayAll(measurement);
     predict_state();
+    std::cout << "\nPredicted State: \n" << std::endl;
+    displayAll(measurement);
     covariance_extrapolate();
+    std::cout << "\nExtrapolated Covariance: \n" << std::endl;
+    displayAll(measurement);
+    calculate_kalman_gain();
+    std::cout << "\nKalman Gain: \n" << std::endl;
+    displayAll(measurement);
+    estimate_state(measurement);
+    std::cout << "\nEstimated State: \n" << std::endl;
+    displayAll(measurement);
+    covariance_update();
+    std::cout << "\nUpdated Covariance: \n" << std::endl;
+    displayAll(measurement);
     return state.X;
+}
+
+void LinearKalmanFilter::displayAll(Matrix meas) {
+    std::cout << "X - State Vector: " << std::endl;
+    state.X.disp();
+    std::cout << "U - Control Vector: " << std::endl;
+    state.U.disp();
+    std::cout << "Measurement Vector: " << std::endl;
+    meas.disp();
+    std::cout << "P - Estimate Covariance Matrix: " << std::endl;
+    state.P.disp();
+    std::cout << "F - State Transition Matrix: " << std::endl;
+    state.F.disp();
+    std::cout << "G - Control Matrix: " << std::endl;
+    state.G.disp();
+    std::cout << "R - Measurement Covariance Matrix: " << std::endl;
+    state.R.disp();
+    std::cout << "K - Kalman Gain Matrix" << std::endl;
+    state.K.disp();
+    std::cout << "Q - Process Noise Matrix: " << std::endl;
+    state.Q.disp();
+    std::cout << "H - Observation Matrix: " << std::endl;
+    state.H.disp();
 }
